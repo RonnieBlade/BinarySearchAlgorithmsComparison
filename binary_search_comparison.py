@@ -88,14 +88,14 @@ def unconventional_binary_search(input_array, value):
     size = len(input_array)
 
     while size > 0:
-        index = int(size / 2) + indent
+        index = size // 2 + indent
         if input_array[index] == value:
             return index
         elif input_array[index] < value:
             indent = index+1
             size = len(input_array) - indent
         else:
-            size = int(size / 2)
+            size = size // 2
     return -1
 
 
