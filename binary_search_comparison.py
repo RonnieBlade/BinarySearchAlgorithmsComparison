@@ -1,6 +1,7 @@
 # Binary search algorithms comparison
 
 import time
+import random
 
 
 # https://www.geeksforgeeks.org/python-program-for-binary-search/
@@ -84,36 +85,48 @@ def iterative_binary_search_2(arr, x):
 
 
 def unconventional_binary_search(input_array, value):
+    arr_len = len(input_array)
     indent = 0
-    size = len(input_array)
+    size = arr_len
 
     while size > 0:
         index = size // 2 + indent
-        if input_array[index] == value:
-            return index
-        elif input_array[index] < value:
+        index_value = input_array[index]
+        if index_value < value:
             indent = index+1
-            size = len(input_array) - indent
+            size = arr_len - indent
+        elif index_value > value:
+            size //= 2
         else:
-            size = size // 2
+            return index
     return -1
 
 
 def main():
 
+    array_length = 31
+    search_values_count = 10
+    repetitions = 100000
+
     print("Binary search algorithms comparison\n")
 
-    test_list = [1, 3, 9, 11, 15, 19, 29, 31, 33, 38, 42, 46, 49, 51, 52, 55, 58, 63, 65, 66, 68, 69, 75, 84, 96, 105, 106, 107, 122, 133]
-    search_values = [9, 1, 15, 155, 19, 29, 0, 2, 63, 84]
-    iterations = 100000
+    test_list = []
+    new_n = 0
+    for i in range(array_length):
+        new_n += random.randint(1, 10)
+        test_list.append(new_n)
+
+    search_values = []
+    for i in range(search_values_count):
+        search_values.append(random.randint(-max(test_list)//2, max(test_list) + max(test_list)//2))
 
     functions = [recursive_binary_search, iterative_binary_search, iterative_binary_search_2, unconventional_binary_search]
 
     for f in functions:
-        print(f"STARTED {f.__name__}. Array length is {len(test_list)}. {iterations * len(search_values)} iterations")
+        print(f"STARTED {f.__name__}. Array length is {len(test_list)}. {repetitions * len(search_values)} iterations")
 
         start = time.time()
-        for i in range(iterations):
+        for i in range(repetitions):
             for n in search_values:
                 f(test_list, n)
 
